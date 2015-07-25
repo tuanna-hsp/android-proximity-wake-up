@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wake Up</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="turn_on_wake_up">Turn on Wake Up</string>
+    <string name="notification_message">Touch me to turn off screen</string>
+</resources>
