@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import java.io.IOException;
+
 
 public class MainActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
@@ -13,6 +15,13 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Request root access
+        try {
+            Runtime.getRuntime().exec("su");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Switch wakeUpSwitch = (Switch) findViewById(R.id.wake_up_switch);
         wakeUpSwitch.setOnCheckedChangeListener(this);
