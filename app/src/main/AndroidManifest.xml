@@ -24,25 +24,5 @@
             android:enabled="true"
             android:exported="false" >
         </service>
-
-        <receiver
-            android:name=".NotificationReceiver"
-            android:enabled="true"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.example.kradragon.wakeup.TURN_OFF_SCREEN_ACTION" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".AdminReceiver"
-            android:description="@string/device_admin_description"
-            android:label="@string/device_admin_label"
-            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
-            </intent-filter>
-        </receiver>
     </application>
-
 </manifest>

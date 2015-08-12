@@ -1,7 +1,6 @@
 package com.example.kradragon.wakeup;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -47,14 +46,10 @@ public class WakeUpService extends Service implements SensorEventListener {
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mMaxRange = mProximitySensor.getMaximumRange();
 
-        Intent i = new Intent(Constants.TURN_OFF_SCREEN_ACTION);
-        PendingIntent pi = PendingIntent.getBroadcast(getApplication(), 0, i, 0);
-
         Notification notification = new Notification.Builder(getApplication())
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.noti_icon)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.notification_message))
-                .setContentIntent(pi)
                 .build();
         startForeground(NOTIFICATION_ID, notification);
     }
