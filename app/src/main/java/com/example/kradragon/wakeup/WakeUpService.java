@@ -20,7 +20,7 @@ public class WakeUpService extends Service implements SensorEventListener {
     private Sensor mProximitySensor;
     private SensorManager mSensorManager;
     private PowerManager.WakeLock mWakeLock;
-    private ScreenReceiver mScreenReceiver;
+    private GenericReceiver mGenericReceiver;
     private float mMaxRange;
     private boolean mPendingWakeUp;
 
@@ -32,11 +32,12 @@ public class WakeUpService extends Service implements SensorEventListener {
     public void onCreate() {
         super.onCreate();
 
-        mScreenReceiver = new ScreenReceiver();
+        mGenericReceiver = new GenericReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(mScreenReceiver, filter);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        registerReceiver(mGenericReceiver, filter);
 
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         int flags = PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP;
@@ -78,8 +79,6 @@ public class WakeUpService extends Service implements SensorEventListener {
     }
 
     private void wakePhoneUp() {
-        Utils.debugLog("wakePhoneUp()");
-
         mWakeLock.acquire();
         mWakeLock.release();
     }
@@ -93,7 +92,7 @@ public class WakeUpService extends Service implements SensorEventListener {
     public void onDestroy() {
         super.onDestroy();
         mSensorManager.unregisterListener(this, mProximitySensor);
-        unregisterReceiver(mScreenReceiver);
+        unregisterReceiver(mGenericReceiver);
     }
 
     @Override
