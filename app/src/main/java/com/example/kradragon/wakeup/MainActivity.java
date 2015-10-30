@@ -1,12 +1,12 @@
 package com.example.kradragon.wakeup;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-
-import java.io.IOException;
 
 
 public class MainActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
@@ -16,15 +16,9 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Request root access
-        try {
-            Runtime.getRuntime().exec("su");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         Switch wakeUpSwitch = (Switch) findViewById(R.id.wake_up_switch);
         wakeUpSwitch.setOnCheckedChangeListener(this);
+        wakeUpSwitch.setChecked(isMyServiceRunning(WakeUpService.class));
     }
 
     @Override
@@ -35,5 +29,16 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         } else {
             stopService(i);
         }
+    }
+
+    private boolean isMyServiceRunning(Class serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(0x7fffffff)) {
+            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
